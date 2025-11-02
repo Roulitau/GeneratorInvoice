@@ -1,3 +1,6 @@
+[![CI](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml/badge.svg)](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml)
+
+
 # GeneratorInvoice
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
