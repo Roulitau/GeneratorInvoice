@@ -1,0 +1,36 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "nom": "Entreprise ABC",
+      "contact": "Jean Dupont",
+      "email": "jean.dupont@abc.com",
+      "telephone": "01 23 45 67 89",
+      "adresse": {
+        "rue": "123 Rue de la Paix",
+        "ville": "Paris",
+        "codePostal": "75001",
+        "pays": "France"
+      },
+      "siret": "12345678901234",
+      "tva": "FR12345678901",
+      "dateCreation": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "nom": "Société XYZ",
+      "contact": "Marie Martin",
+      "email": "marie.martin@xyz.fr",
+      "telephone": "01 98 76 54 32",
+      "adresse": {
+        "rue": "456 Avenue des Champs",
+        "ville": "Lyon",
+        "codePostal": "69000",
+        "pays": "France"
+      },
+      "siret": "98765432109876",
+      "tva": "FR98765432109",
+      "dateCreation": "2024-02-20"
+    }
+  ]
+}

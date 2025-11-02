@@ -1,3 +1,39 @@
-<h1> Générateur de facture </h1>
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <h1>Générateur de facture</h1>
+    </div>
+    
+    <ul class="navbar-menu">
+      <li class="navbar-item">
+        <a routerLink="/dashboard" class="navbar-link" routerLinkActive="active">Accueil</a>
+      </li>
+      <li class="navbar-item">
+        <a routerLink="/invoices/create" class="navbar-link" routerLinkActive="active">Créer une facture</a>
+      </li>
+      <li class="navbar-item">
+        <a routerLink="/invoices" class="navbar-link" routerLinkActive="active">Mes factures</a>
+      </li>
+      <li class="navbar-item">
+        <a routerLink="/clients" class="navbar-link" routerLinkActive="active">Clients</a>
+      </li>
+      <li class="navbar-item">
+        <a href="#" class="navbar-link">Paramètres</a>
+      </li>
+    </ul>
 
-<router-outlet />
+    <div class="navbar-actions">
+      <button class="btn-primary" (click)="navigateToCreateInvoice()">Nouvelle facture</button>
+    </div>
+
+    <div class="navbar-toggle" (click)="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet />
+</main>
