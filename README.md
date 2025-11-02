@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/github/Roulitau/GeneratorInvoice?branch=main&svg=true)](https://ci.appveyor.com/project/Roulitau/GeneratorInvoice)
 [![CI](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml/badge.svg)](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml)
 
 
