@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const INVOICES_ROUTES: Routes = [
   {
-    path: 'list',
+    path: '',
     loadComponent: () => import('./invoice-list/invoices.list.component').then(m => m.InvoicesListComponent)
   },
   {
