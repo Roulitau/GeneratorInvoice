@@ -1,5 +1,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/github/Roulitau/GeneratorInvoice?branch=main&svg=true)](https://ci.appveyor.com/project/Roulitau/GeneratorInvoice)
 [![CI](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml/badge.svg)](https://github.com/Roulitau/GeneratorInvoice/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Roulitau/GeneratorInvoice/branch/main/graph/badge.svg)](https://codecov.io/gh/Roulitau/GeneratorInvoice)
+[![Dependabot](https://badgen.net/github/dependabot/Roulitau/GeneratorInvoice)](https://github.com/Roulitau/GeneratorInvoice/network/updates)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 # GeneratorInvoice
