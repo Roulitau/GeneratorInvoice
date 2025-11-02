@@ -2,7 +2,7 @@
   "clients": [
     {
       "id": 1,
-      "nom": "Entreprise ABC",
+      "nom": "Exotic",
       "contact": "Jean Dupont",
       "email": "jean.dupont@abc.com",
       "telephone": "01 23 45 67 89",

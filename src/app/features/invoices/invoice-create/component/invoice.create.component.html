@@ -32,7 +32,9 @@
 
       <div class="form-group">
         <label for="clientId">Client *</label>
-        <!--<p>Debug: {{ clients.length }} clients trouvés</p>-->
+        <p>
+          <small>Debug: {{ clients.length }} clients trouvés</small>
+        </p>
         <select id="clientId" formControlName="clientId" class="form-control">
           <option value="">Sélectionner un client</option>
           <option *ngFor="let client of clients" [value]="client.id">
@@ -90,20 +92,144 @@
           class="category-radio-group"
           formControlName="category"
         >
-          <mat-radio-button 
-            class="category-radio-button" 
-            *ngFor="let category of categories" 
+          <mat-radio-button
+            class="category-radio-button"
+            *ngFor="let category of categories"
             [value]="category"
           >
             {{ category }}
           </mat-radio-button>
         </mat-radio-group>
 
-        <p>Catégorie sélectionnée: {{ invoiceForm.get('category')?.value }}</p>
-        <p>Section des articles à implémenter...</p>
-        <p>
-          Ici vous pourrez ajouter des produits/services avec quantités et prix.
-        </p>
+        <h3>Prestations :</h3>
+
+        <div class="form-group">
+          <label for="nombrePrestations"
+            >Nombre de prestations * (max {{ maxPrestations }})</label
+          >
+          <select
+            id="nombrePrestations"
+            formControlName="nombrePrestations"
+            class="form-control"
+          >
+            <option *ngFor="let nb of getPrestationOptions()" [value]="nb">
+              {{ nb }} prestation{{ nb > 1 ? "s" : "" }}
+            </option>
+          </select>
+        </div>
+
+        <div class="prestations-container" formArrayName="prestations">
+          <div
+            class="prestation-item"
+            *ngFor="let prestation of prestations.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <h4>Prestation {{ i + 1 }}</h4>
+
+            <div class="form-group">
+              <label [for]="'prestationDescription' + i">Description *</label>
+              <input
+                [id]="'prestationDescription' + i"
+                type="text"
+                formControlName="description"
+                class="form-control"
+                placeholder="Description de la prestation {{ i + 1 }}"
+              />
+            </div>
+
+            <div class="form-group">
+              <label [for]="'prestationMontant' + i"
+                >Montant * (€, {{ isTvaActive() ? "HT" : "TTC" }})</label
+              >
+              <input
+                [id]="'prestationMontant' + i"
+                type="number"
+                formControlName="montant"
+                class="form-control"
+                placeholder="Montant"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+
+          <!--<div class="total-prestations">
+            <div *ngIf="prestations.length > 1">
+              <strong
+                >Total des prestations :
+                {{ getTotalMontantPrestations() | number : "1.2-2" }}€
+                {{ isTvaActive() ? "HT" : "TTC" }}</strong
+              >
+            </div>
+          </div>-->
+        </div>
+
+        <!-- Section TVA -->
+        <div class="tva-section">
+          <h3>Gestion de la TVA :</h3>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                formControlName="tvaActive"
+                class="checkbox-input"
+              />
+              <span class="checkbox-text">Activer la TVA (Prix HT + TVA)</span>
+            </label>
+          </div>
+
+          <div class="form-group" *ngIf="isTvaActive()">
+            <label for="tauxTva">Taux de TVA * (%)</label>
+            <select id="tauxTva" formControlName="tauxTva" class="form-control">
+              <option
+                *ngFor="let taux of getTauxTvaPredefinis()"
+                [value]="taux"
+              >
+                {{ taux }}%
+                {{
+                  taux === 20
+                    ? "(Standard)"
+                    : taux === 10
+                    ? "(Réduit)"
+                    : taux === 5.5
+                    ? "(Super réduit)"
+                    : taux === 0
+                    ? "(Exonéré)"
+                    : ""
+                }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Récapitulatif des montants -->
+        <div class="total-prestations" *ngIf="getTotalMontantPrestations() > 0">
+          <div class="montants-recap">
+            <div class="recap-line">
+              <span>Montant HT :</span>
+              <span
+                ><strong>{{ getMontantHT() | number : "1.2-2" }}€</strong></span
+              >
+            </div>
+            <div class="recap-line" *ngIf="isTvaActive()">
+              <span>TVA ({{ getTauxTva() }}%) :</span>
+              <span
+                ><strong
+                  >{{ getMontantTVA() | number : "1.2-2" }}€</strong
+                ></span
+              >
+            </div>
+            <div class="recap-line total-line">
+              <span>Montant TTC :</span>
+              <span
+                ><strong
+                  >{{ getMontantTTC() | number : "1.2-2" }}€</strong
+                ></span
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -135,6 +261,39 @@
             <strong>Date d'échéance:</strong>
             {{ invoiceForm.get("dateEcheance")?.value }}
           </p>
+          <p>
+            <strong>Catégorie:</strong> {{ invoiceForm.get("category")?.value }}
+          </p>
+          <div class="prestations-summary">
+            <p><strong>Prestations:</strong></p>
+            <div
+              *ngFor="let prestation of prestations.controls; let i = index"
+              class="prestation-summary-item"
+            >
+              <p>
+                • {{ prestation.get("description")?.value }} :
+                {{ prestation.get("montant")?.value | number : "1.2-2" }}€
+                {{ isTvaActive() ? "HT" : "TTC" }}
+              </p>
+            </div>
+
+            <!-- Détail des montants -->
+            <div class="montants-detail">
+              <p>
+                <strong>Montant HT:</strong>
+                {{ getMontantHT() | number : "1.2-2" }}€
+              </p>
+              <p *ngIf="isTvaActive()">
+                <strong>TVA ({{ getTauxTva() }}%):</strong>
+                {{ getMontantTVA() | number : "1.2-2" }}€
+              </p>
+              <p>
+                <strong>Montant TTC:</strong>
+                {{ getMontantTTC() | number : "1.2-2" }}€
+              </p>
+            </div>
+          </div>
+          <p><strong>Notes:</strong> {{ invoiceForm.get("notes")?.value }}</p>
         </div>
       </div>
     </div>
@@ -171,3 +330,27 @@
     </div>
   </form>
 </div>
+
+<p>Client: {{ getSelectedClientName() }}</p>
+<p>Numéro de facture: {{ invoiceForm.get("numero")?.value }}</p>
+<p>Date d'émission: {{ invoiceForm.get("dateEmission")?.value }}</p>
+<p>Date d'échéance: {{ invoiceForm.get("dateEcheance")?.value }}</p>
+<p>Catégorie sélectionnée: {{ invoiceForm.get("category")?.value }}</p>
+<p>Nombre de prestations: {{ invoiceForm.get("nombrePrestations")?.value }}</p>
+<div *ngFor="let prestation of prestations.controls; let i = index">
+  <p>
+    Prestation {{ i + 1 }}: {{ prestation.get("description")?.value }} -
+    {{ prestation.get("montant")?.value }}€ {{ isTvaActive() ? "HT" : "TTC" }}
+  </p>
+</div>
+<p>TVA activée: {{ isTvaActive() ? "Oui" : "Non" }}</p>
+<p *ngIf="isTvaActive()">Taux TVA: {{ getTauxTva() }}%</p>
+<p>
+  <strong>Montant HT: {{ getMontantHT() | number : "1.2-2" }}€</strong>
+</p>
+<p *ngIf="isTvaActive()">
+  <strong>Montant TVA: {{ getMontantTVA() | number : "1.2-2" }}€</strong>
+</p>
+<p>
+  <strong>Montant TTC: {{ getMontantTTC() | number : "1.2-2" }}€</strong>
+</p>
