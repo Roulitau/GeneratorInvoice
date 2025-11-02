@@ -15,9 +15,16 @@ export class ClientService {
   }
 
   private loadClients(): void {
+    console.log('Service: Tentative de chargement des clients...');
     this.http.get<{clients: Client[]}>('/assets/data/clients.json')
-      .subscribe(data => {
-        this.clientsSubject.next(data.clients);
+      .subscribe({
+        next: (data) => {
+          console.log('Service: Données reçues:', data);
+          this.clientsSubject.next(data.clients);
+        },
+        error: (error) => {
+          console.error('Service: Erreur lors du chargement:', error);
+        }
       });
   }
 

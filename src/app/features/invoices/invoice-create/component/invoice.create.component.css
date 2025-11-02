@@ -96,6 +96,7 @@
 }
 
 .form-group {
+  margin-right: 50px;
   margin-bottom: 20px;
 }
 
@@ -131,12 +132,18 @@
   border-color: #ef4444;
 }
 
+.form-text {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
 /* Articles Section */
 .articles-section {
   background: #f9fafb;
   padding: 20px;
   border-radius: 8px;
-  text-align: center;
+  text-align: left;
   color: #6b7280;
 }
 
@@ -220,6 +227,27 @@
   background: #d1d5db;
   color: #9ca3af;
   cursor: not-allowed;
+}
+
+.category-radio-group {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.category-radio-button {
+  margin-right: 20px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #374151;
+}
+
+#category-radio-group-label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
 }
 
 /* Responsive Design */

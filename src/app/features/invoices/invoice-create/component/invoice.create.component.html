@@ -2,11 +2,19 @@
   <div class="header">
     <h2>📄 Créer une nouvelle facture</h2>
     <div class="steps-indicator">
-      <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+      <div
+        class="step"
+        [class.active]="currentStep >= 1"
+        [class.completed]="currentStep > 1"
+      >
         <span class="step-number">1</span>
         <span class="step-label">Client</span>
       </div>
-      <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+      <div
+        class="step"
+        [class.active]="currentStep >= 2"
+        [class.completed]="currentStep > 2"
+      >
         <span class="step-number">2</span>
         <span class="step-label">Articles</span>
       </div>
@@ -21,9 +29,10 @@
     <!-- Étape 1: Sélection du client -->
     <div class="step-content" *ngIf="currentStep === 1">
       <h3>Informations client</h3>
-      
+
       <div class="form-group">
         <label for="clientId">Client *</label>
+        <!--<p>Debug: {{ clients.length }} clients trouvés</p>-->
         <select id="clientId" formControlName="clientId" class="form-control">
           <option value="">Sélectionner un client</option>
           <option *ngFor="let client of clients" [value]="client.id">
@@ -35,31 +44,35 @@
       <div class="form-row">
         <div class="form-group">
           <label for="numero">Numéro de facture *</label>
-          <input 
-            id="numero" 
-            type="text" 
-            formControlName="numero" 
+          <input
+            id="numero"
+            type="text"
+            formControlName="numero"
             class="form-control"
-            placeholder="FAC-2024-001"
+            [placeholder]="generateInvoiceNumber()"
+            readonly
           />
+          <small class="form-text"
+            >Généré automatiquement selon le client sélectionné</small
+          >
         </div>
-        
+
         <div class="form-group">
           <label for="dateEmission">Date d'émission *</label>
-          <input 
-            id="dateEmission" 
-            type="date" 
-            formControlName="dateEmission" 
+          <input
+            id="dateEmission"
+            type="date"
+            formControlName="dateEmission"
             class="form-control"
           />
         </div>
-        
+
         <div class="form-group">
           <label for="dateEcheance">Date d'échéance *</label>
-          <input 
-            id="dateEcheance" 
-            type="date" 
-            formControlName="dateEcheance" 
+          <input
+            id="dateEcheance"
+            type="date"
+            formControlName="dateEcheance"
             class="form-control"
           />
         </div>
@@ -69,62 +82,87 @@
     <!-- Étape 2: Articles -->
     <div class="step-content" *ngIf="currentStep === 2">
       <h3>Articles et services</h3>
-      
+
       <div class="articles-section">
+        <label id="category-radio-group-label">Catégorie :</label>
+        <mat-radio-group
+          aria-labelledby="category-radio-group-label"
+          class="category-radio-group"
+          formControlName="category"
+        >
+          <mat-radio-button 
+            class="category-radio-button" 
+            *ngFor="let category of categories" 
+            [value]="category"
+          >
+            {{ category }}
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <p>Catégorie sélectionnée: {{ invoiceForm.get('category')?.value }}</p>
         <p>Section des articles à implémenter...</p>
-        <p>Ici vous pourrez ajouter des produits/services avec quantités et prix.</p>
+        <p>
+          Ici vous pourrez ajouter des produits/services avec quantités et prix.
+        </p>
       </div>
     </div>
 
     <!-- Étape 3: Résumé -->
     <div class="step-content" *ngIf="currentStep === 3">
       <h3>Résumé de la facture</h3>
-      
+
       <div class="summary-section">
         <div class="form-group">
           <label for="notes">Notes supplémentaires</label>
-          <textarea 
-            id="notes" 
-            formControlName="notes" 
+          <textarea
+            id="notes"
+            formControlName="notes"
             class="form-control"
             rows="4"
             placeholder="Merci pour votre confiance..."
           ></textarea>
         </div>
-        
+
         <div class="invoice-preview">
           <h4>Aperçu</h4>
           <p><strong>Client:</strong> {{ getSelectedClientName() }}</p>
-          <p><strong>Numéro:</strong> {{ invoiceForm.get('numero')?.value }}</p>
-          <p><strong>Date d'émission:</strong> {{ invoiceForm.get('dateEmission')?.value }}</p>
-          <p><strong>Date d'échéance:</strong> {{ invoiceForm.get('dateEcheance')?.value }}</p>
+          <p><strong>Numéro:</strong> {{ invoiceForm.get("numero")?.value }}</p>
+          <p>
+            <strong>Date d'émission:</strong>
+            {{ invoiceForm.get("dateEmission")?.value }}
+          </p>
+          <p>
+            <strong>Date d'échéance:</strong>
+            {{ invoiceForm.get("dateEcheance")?.value }}
+          </p>
         </div>
       </div>
     </div>
 
     <!-- Navigation -->
     <div class="navigation-buttons">
-      <button 
-        type="button" 
-        class="btn-secondary" 
-        (click)="previousStep()" 
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="previousStep()"
         [disabled]="currentStep === 1"
       >
         ← Précédent
       </button>
-      
-      <button 
-        type="button" 
-        class="btn-primary" 
-        (click)="nextStep()" 
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="nextStep()"
+        [disabled]="!canProceedToNextStep()"
         *ngIf="currentStep < totalSteps"
       >
         Suivant →
       </button>
-      
-      <button 
-        type="submit" 
-        class="btn-success" 
+
+      <button
+        type="submit"
+        class="btn-success"
         *ngIf="currentStep === totalSteps"
         [disabled]="!invoiceForm.valid"
       >

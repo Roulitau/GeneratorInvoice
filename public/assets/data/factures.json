@@ -1,0 +1,23 @@
+{
+  "factures": [
+    {
+      "id": 1,
+      "numero": "FAC-2024-001",
+      "clientId": 1,
+      "dateEmission": "2024-11-01",
+      "dateEcheance": "2024-12-01",
+      "statut": "envoyee",
+      "articles": [
+        {
+          "id": 1,
+          "description": "Consultation développement web",
+          "quantite": 5,
+          "prixUnitaire": 150,
+          "tva": 20
+        }
+      ],
+      "remise": 0,
+      "notes": "Merci pour votre confiance"
+    }
+  ]
+}
