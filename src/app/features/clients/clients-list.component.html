@@ -1,0 +1,33 @@
+<div class="clients-container">
+  <div class="header">
+    <h2>Gestion des clients</h2>
+    <button class="btn-primary">Ajouter un client</button>
+  </div>
+
+  <div class="clients-grid" *ngIf="clients.length > 0">
+    <div class="client-card" *ngFor="let client of clients">
+      <div class="client-header">
+        <h3>{{ client.nom }}</h3>
+        <div class="client-actions">
+          <button class="btn-edit">Modifier</button>
+          <button class="btn-delete">Supprimer</button>
+        </div>
+      </div>
+
+      <div class="client-info">
+        <p><strong>Contact:</strong> {{ client.contact }}</p>
+        <p><strong>Email:</strong> {{ client.email }}</p>
+        <p><strong>Téléphone:</strong> {{ client.telephone }}</p>
+        <p>
+          <strong>Adresse:</strong> {{ client.adresse.rue }},
+          {{ client.adresse.ville }}
+        </p>
+        <p *ngIf="client.siret"><strong>SIRET:</strong> {{ client.siret }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="clients.length === 0">
+    <p>Aucun client trouvé. Commencez par ajouter votre premier client.</p>
+  </div>
+</div>
