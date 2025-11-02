@@ -1,14 +1,15 @@
-name: CI
+name: CI - Build & Test
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: debian
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20'  # Version LTS d'Angular 17
+          cache: 'npm'
       - run: npm install
       - run: npm run build -- --configuration=production
-      - run: npm start
+      - run: npm test  # Si vous avez des tests (Karma/Jasmine)
